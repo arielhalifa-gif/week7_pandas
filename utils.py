@@ -7,21 +7,22 @@ class Functions:
         return df
     
 
-    @staticmethod
-    def removing_dollar_sign(values):
-        values = values.str.replace('$', '')
+    @classmethod
+    def removing_dollar_sign(cls, df):
+        values = df['total_amount'].str.replace('$', '')
         return values
     
 
     @staticmethod
     def converting_types(df):
         # removing $
-        df['total_amount'] = Functions.removing_dollar_sign(df['total_amount'])
+        df['total_amount'] = Functions.removing_dollar_sign(df)
         df['total_amount'] = df['total_amount'].astype(float)
         df['shipping_days'] = pd.to_numeric(df['shipping_days']) #already int but for practice i convert again beased on the teacher
         df['customer_age'] = pd.to_numeric(df['customer_age']) #already int but for practice i convert again based on the teacher
         df['order_date'] = pd.to_datetime(df['order_date'])
         print(df.dtypes)
+        print(df['total_amount'])
 
     @staticmethod
     def removing_html(df):
