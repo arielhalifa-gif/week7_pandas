@@ -25,7 +25,7 @@ class Functions:
 
     @staticmethod
     def removing_html(df):
-        df['items_html'] = df['items_html'].str.replace(r'<[^<>]*>', '', regex = True)
+        df['items_html'] = df['items_html'].str.replace(r'<[^<>]*>', ' ', regex = True)
         return df
     
     @staticmethod
@@ -41,5 +41,29 @@ class Functions:
     
     @staticmethod
     def adding_high_value_order_column(df):
-        df = df.assign(high_value_order = lambda x: x['total_amount'] > x['total_amount'].mean() True else: False)
+        df = df.assign(high_value_order = lambda x: True if x['total_amount'] > x['total_amount'].mean() else False)
+        return df.sort_values('total_amount', ascending = False)
+    
+
+
+    @staticmethod
+    def adding_avg_rating(df):
+        sorted_rating_by_country = df.groupby('country')['rating'].mean()
+        df['avg_ratings'] = None
+        for country in df['country']:
+            for key, value in sorted_rating_by_country:
+                if country == key:
+                    df['avg_ratings'].loc[df['country'] == key] = value
+        return df
+    
+    @staticmethod
+    def sorting_columns(df):
+        mask = df['total_amount'] < 1000 & df['avg_ratings'] < 4.5
+        df = df.drop(mask)
+        return df
+    
+
+    @staticmethod
+    def creatin_delivery_status(df):
+        df = df.assign(delivery_status = lambda x: 'delayed' if x['shipping_days'] > 7 else 'on time')
         return df

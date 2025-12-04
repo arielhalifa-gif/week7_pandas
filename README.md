@@ -1,1 +1,3 @@
-# week7_pandas
+Ariel Halifa
+209643808
+arava
