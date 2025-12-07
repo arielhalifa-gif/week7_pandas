@@ -23,6 +23,7 @@ class Functions:
         df['order_date'] = pd.to_datetime(df['order_date'])
         print(df.dtypes)
         print(df['total_amount'])
+        return df
 
     @staticmethod
     def removing_html(df):
